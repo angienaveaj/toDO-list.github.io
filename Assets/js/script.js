@@ -15,20 +15,40 @@ const tareas = guardar || [
 //Mostramos tareas en el DOM
 function renderTareas() {
     let html = ''
-    for (let tarea of tareas){
-        html += `<li class="item-tarea my-2 p-1 d-flex align-items-center text-${tarea.realizada ? "primary" : "primary-emphasis"}"> <input type="checkbox" ${tarea.realizada == true ? 'checked' : '' } onchange="validacionRealizadas(${tarea.id})" id="tarea${tarea.id}"> <span class="id">${tarea.id}</span> <span>- ${tarea.nombreTarea}</span> <button onclick="borrar(${tarea.id})" class="btn btn-danger btn-eliminar bg-${tarea.realizada ? "opacity-1" : "opacity-05"}"">Eliminar</button></li>`
+
+    for (let tarea of tareas) {
+        const checked = tarea.realizada ? 'checked' : '';
+        const estiloTexto = tarea.realizada ? 'text-primary' : 'text-primary-emphasis';
+        const opacidad = tarea.realizada ? 'opacity-1' : 'opacity-05';
+
+        html += `
+        <li class="item-tarea my-2 p-1 d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-2">
+            <input type="checkbox" ${checked} onchange="validacionRealizadas(${tarea.id})">
+            <span class="id ${estiloTexto}">${tarea.id}</span>`;
+
+        if (tarea.editando) {
+            html += `<input type="text" id="editar-${tarea.id}" value="${tarea.nombreTarea}" class="form-control">`
+        } else {
+            html += `<span class="la-tarea ${estiloTexto}">${tarea.nombreTarea}</span>`;
+        }
+
+        html += `</div>
+        <div class="d-flex gap-2 justify-content-between">
+            <button onClick="editarTarea(${tarea.id})" class="btn btn-outline-primary"> ${tarea.editando ? 'Guardar' : 'Editar'}</button>
+            <button onclick="borrar(${tarea.id})" class="btn btn-danger btn-eliminar bg-${tarea.realizada ? "opacity-1" : "opacity-05"}">Eliminar</button>
+        </div>
+        </li>`;
     }
+
     listaTareas.innerHTML = html;
-    totalTareas.innerHTML = tareas.length //contabiliza cantidad de tareas
-    
-    const realizadas = tareas.filter(elemento => elemento.realizada).length;
-    completadas.innerHTML = realizadas;
-    console.log(tareas)
+    totalTareas.innerHTML = tareas.length;
+    completadas.innerHTML = tareas.filter(t => t.realizada).length;
     
     localStorage.setItem('tareas', JSON.stringify(tareas));
 };
 
-renderTareas()
+//renderTareas()
 
 btnAgregar.addEventListener('click', () => {
     //valida q input tenga contenido
@@ -43,13 +63,22 @@ btnAgregar.addEventListener('click', () => {
 
     let nuevaTarea = {
         id: id,
-        nombreTarea: tareaInput.value
+        nombreTarea: tareaInput.value.trim(), //
+        realizada: false, //
+        editando: false //
     }
     tareas.push(nuevaTarea);
     tareaInput.value = '';
 
     renderTareas()
 });
+
+//tomar al enter
+tareaInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        btnAgregar.click();
+    }
+})
 
 renderTareas()
 
@@ -73,6 +102,18 @@ function validacionRealizadas(id){
     }
 }
 
+function editarTarea(id) {
+    const tarea = tareas.find(t => t.id === id);
+    if (!tarea) return;
+    
+    if (tarea.editando) {
+        const input = document.querySelector(`#editar-${id}`);
+        tarea.nombreTarea = input.value.trim();
+    }
+
+    tarea.editando = !tarea.editando;
+    renderTareas();
+}
 
     
 
