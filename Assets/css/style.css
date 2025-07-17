@@ -8,9 +8,29 @@ body {
     background-color: #f1f0f6;
 }
 
-.container {
-    background-color: #fff !important;
+body.tema-claro {
+  background-color:#f1f0f6;
+  color: #333;
+}
+
+body.tema-oscuro {
+  background-color: #24252a;
+  color: #f1f1f1;
+}
+
+body.tema-pastel {
+  background-color: #ffe8d6;
+  color: #4b2e2e;
+}
+
+.contenedor {
+    background-color: #fff;
     border-radius: 10px;
+}
+
+.contenedor.tema-oscuro {
+    background-color: #333742;
+    border: 1px solid #40444f;
 }
 
 .contenedor-title {
@@ -18,16 +38,28 @@ body {
 }
 
 .outline-secondary,
-.item-tarea {
-    
+.item-tarea { 
     border-radius: 5px;
     line-height: 2rem;
     background-color: #f1f0f6;
 }
 
+.item-tarea.tema-oscuro {
+    background-color: #2a2d36;
+    color: #f1f0f6;
+}
 input.form-control:focus {
     border-color: #007bff;
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.input-tarea.tema-oscuro{
+    background-color: transparent;
+    border: 1px solid #40444f;
+}
+
+.btn-input.tema-oscuro {
+    background-color: #7f7bff;
 }
 
 ul {
@@ -35,12 +67,12 @@ ul {
     padding-left:0 ;
 }
 
-.bg-primary {
-    background-color: #2d04df !important;
+.btn-input {
+    background-color: #2d04df;
 }
 
-.text-primary {
-    color: #2c04df7a !important;
+.text-opacity {
+    opacity: .5;
     text-decoration: line-through;
 }
 
@@ -60,6 +92,10 @@ input[type="checkbox"] {
     border-radius: 50%;
     accent-color: #2d04df; /* Cambia el color del check (moderno y fácil) */
     cursor: pointer;
+}
+
+input.checkbox-tarea.tema-oscuro[type="checkbox"] {
+    accent-color: #7e7cff; 
 }
 
 .btn-eliminar {

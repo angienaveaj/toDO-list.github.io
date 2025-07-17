@@ -9,9 +9,19 @@
 </head>
 <body>
     <!--Contenedor-->
-    <div class="container my-5 py-4 px-4">
+    <div class="container my-5 py-4 px-4 contenedor">
+        <div class="row">
+            <div class="tema-selector">
+                <label for="tema">Selecciona un tema:</label>
+                <select id="tema">
+                    <option value="claro">Claro</option>
+                    <option value="oscuro">Oscuro</option>
+                    <!-- <option value="pastel">Pastel</option> -->
+                </select>
+            </div>
+        </div>
         <div class="row my-3 d-flex justify-content-start">
-            <h1>📋 Mi lista de Minitareas diarias</h1>
+            <h1>📋 Mi lista de Minitareas diarias:</h1>
             <div class="contenedor-title row d-flex gap-3">
                 <div class="col-auto outline-secondary">Total: <span class="badge bg-secondary" id="total">0</span></div>
                 <div class="col-auto outline-secondary">Realizadas: <span class="badge bg-primary" id="completadas">0</span></div>
@@ -19,8 +29,8 @@
         </div>
         <div class="row my-5">
             <div class="input-group mb-3">
-                <input id="input" type="text" class="form-control" placeholder="Ingresa una tarea" aria-label="Ingresa" aria-describedby="button-addon2">
-                <button id="boton" class="btn text-white bg-primary" type="button" id="button-addon2">Agregar +</button>
+                <input id="input" type="text" class="form-control input-tarea" placeholder="Ingresa una tarea" aria-label="Ingresa" aria-describedby="button-addon2">
+                <button id="boton" class="btn text-white btn-input" type="button" id="button-addon2">Agregar +</button>
               </div>
         </div>
         <div class="row mt-5">
