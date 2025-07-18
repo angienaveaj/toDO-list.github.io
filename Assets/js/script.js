@@ -29,7 +29,7 @@ function renderTareas() {
         //creamos un bloque HTML
         const temaActual = localStorage.getItem('tema') || 'claro';
         html += ` 
-        <li class="item-tarea tema-${temaActual} row py-2 my-1">
+        <li class="item-tarea tema-${temaActual} row py-2 my-1" id="tarea-${tarea.id}">
             <div class="d-flex align-items-center gap-2 col-md-11">
             <input type="checkbox" ${checked} onchange="validacionRealizadas(${tarea.id})" class="checkbox-tarea tema-${temaActual}" data-toggle="tooltip" data-placement="top" title="Marcar como completada">
             <span class="id ${estiloTexto}">${tarea.id}</span>`;
@@ -104,10 +104,16 @@ console.log(tareas)
 
 //BORRAR TAREA
 function borrar(id) {
-    const index = tareas.findIndex((ele) => ele.id == id)
-    tareas.splice(index, 1)
+    const li = document.getElementById(`tarea-${id}`); //busca el <li> con su ID
+    li.classList.add('eliminando'); //añade class
 
-    renderTareas()
+    setTimeout(() => {
+        //eliminar tarea del array tareas usando splice despues de la animacion
+        const index = tareas.findIndex((ele) => ele.id == id);
+        tareas.splice(index, 1); 
+        
+        renderTareas(); //despues de la animacion llamamos a render tareas
+    }, 500); //tiempo igual de la animacion
 }
 
 console.log(borrar)

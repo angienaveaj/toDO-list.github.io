@@ -7,12 +7,32 @@
 
 body {
     background-color: #f1f0f6;
+    transition: background-color 0.8s ease, color 0.8s ease;
+}
+
+body, .item-tarea {
+  transition: background-color 0.8s ease, color 0.8s ease;
 }
 
 body.tema-claro {
   background-color:#f1f0f6;
   color: #333;
 }
+
+/*Animacion*/
+.item-tarea {
+  transition: all 0.5s ease;
+}
+
+.item-tarea.eliminando {
+  opacity: 0;
+  transform: translateY(800%);
+  height: 0;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+/**/
 
 .contenedor {
     background-color: #fff;
