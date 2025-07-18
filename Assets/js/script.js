@@ -30,8 +30,8 @@ function renderTareas() {
         const temaActual = localStorage.getItem('tema') || 'claro';
         html += ` 
         <li class="item-tarea tema-${temaActual} row py-2 my-1">
-            <div class="d-flex align-items-center gap-2 col-md-10">
-            <input type="checkbox" ${checked} onchange="validacionRealizadas(${tarea.id})" class="checkbox-tarea">
+            <div class="d-flex align-items-center gap-2 col-md-11">
+            <input type="checkbox" ${checked} onchange="validacionRealizadas(${tarea.id})" class="checkbox-tarea tema-${temaActual}" data-toggle="tooltip" data-placement="top" title="Marcar como completada">
             <span class="id ${estiloTexto}">${tarea.id}</span>`;
 
         //Mostra input si la tarea está en modo edición
@@ -42,9 +42,9 @@ function renderTareas() {
         }
 
         html += `</div>
-        <div class="d-flex gap-2 justify-content-evenly col-md-2 mt-1">
-            <button onClick="editarTarea(${tarea.id})" class="btn btn-outline-primary w-100"> ${tarea.editando ? 'Guardar' : 'Editar'}</button>
-            <button onclick="borrar(${tarea.id})" class="btn btn-danger btn-eliminar w-100 bg-${tarea.realizada ? "opacity-1" : "opacity-05"}">Eliminar</button>
+        <div class="d-flex gap-2 justify-content-end col-md-1 mt-1">
+            <button onClick="editarTarea(${tarea.id})" class="btn btn-outline-primary"> ${tarea.editando ? '<i class="fa-solid fa-check"></i>' : '<i class="fa-regular fa-pen-to-square"></i>'}</button>
+            <button onclick="borrar(${tarea.id})" class="btn btn-danger btn-eliminar bg-${tarea.realizada ? "opacity-1" : "opacity-05"}"><i class="fa-regular fa-trash-can"></i></button>
         </div>
         </li>`;
     }
@@ -126,8 +126,8 @@ function editarTarea(id) {
     renderTareas();
 }
 
-//Editar temas
-const selectTema = document.getElementById('tema');
+///////Editar TEMAS COLORES ////////
+const selectTema = document.getElementById('selectTema');
 const contenedor = document.querySelector('.contenedor');
 const inputTarea = document.querySelector('.input-tarea');
 const btnInput = document.querySelector('.btn-input')
@@ -140,22 +140,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     contenedor.classList.add(`tema-${temaGuardado}`);
 
+    selectTema.classList.add(`tema-${temaGuardado}`);
+
     inputTarea.classList.add(`tema-${temaGuardado}`);
 
     btnInput.classList.add(`tema-${temaGuardado}`);
-    //Contenedor de cada item tarea
+    //Contenedor de cada budge
+    const contenedorBudge = document.querySelectorAll('.contenedor-budge');
+    contenedorBudge.forEach(cont => {
+        cont.classList.add(`tema-${temaGuardado}`);
+    });
+        selectTema.value = temaGuardado;
+    //contenedor item tarea
     const elementos = document.querySelectorAll('.item-tarea');
     elementos.forEach(el => {
         el.classList.add(`tema-${temaGuardado}`);
     });
-        //selectTema.value = temaGuardado;
+        selectTema.value = temaGuardado;
     //
     const checkboxs = document.querySelectorAll('.checkbox-tarea');
     checkboxs.forEach(ch => {
-        ch.classList.add(`tema-${temaGuardado}`);
+    ch.classList.add(`tema-${temaGuardado}`);
     });
-        selectTema.value = temaGuardado;
-    });
+});
 
 //Cambia el tema cuando el usuario selecciona
 selectTema.addEventListener('change', () => {
@@ -169,13 +176,20 @@ selectTema.addEventListener('change', () => {
     inputTarea.classList.replace(`tema-${temaAnterior}`, `tema-${nuevoTema}`);
     //
     btnInput.classList.replace(`tema-${temaAnterior}`, `tema-${nuevoTema}`);
+    //cambia color budge
+    document.querySelectorAll('.contenedor-budge').forEach(cont => {
+        cont.classList.replace(`tema-${temaAnterior}`, `tema-${nuevoTema}`)
+    });
     //cambia items
     document.querySelectorAll('.item-tarea').forEach(el => {
         el.classList.replace(`tema-${temaAnterior}`, `tema-${nuevoTema}`)
     });
+    //cambia select
+    selectTema.classList.replace(`tema-${temaAnterior}`, `tema-${nuevoTema}`);
     //cambia checkboxs
     document.querySelectorAll('.checkbox-tarea').forEach(ch => {
-        ch.classList.replace(`tema-${temaAnterior}`, `tema-${nuevoTema}`)
-    });
+    ch.classList.remove(`tema-${temaAnterior}`);
+    ch.classList.add(`tema-${nuevoTema}`);
+});
     localStorage.setItem('tema', nuevoTema);
 });
