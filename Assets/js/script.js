@@ -1,4 +1,5 @@
 const btnAgregar = document.querySelector('#boton')
+const btnEditar = document.querySelectorAll('.btn-editar')
 const tareaInput = document.querySelector('#input')
 const listaTareas = document.querySelector('ul')
 const totalTareas = document.querySelector('#total')
@@ -34,7 +35,7 @@ function renderTareas() {
             <input type="checkbox" ${checked} onchange="validacionRealizadas(${tarea.id})" class="checkbox-tarea tema-${temaActual}" data-toggle="tooltip" data-placement="top" title="Marcar como completada">
             <span class="id ${estiloTexto}">${tarea.id}</span>`;
 
-        //Mostra input si la tarea está en modo edición
+        //Mostrar INPUT EDITAR  input si la tarea está en modo edición
         if (tarea.editando) {
             html += `<input type="text" id="editar-${tarea.id}" value="${tarea.nombreTarea}" class="form-control">`
         } else {
@@ -43,7 +44,7 @@ function renderTareas() {
 
         html += `</div>
         <div class="d-flex gap-2 justify-content-end col-md-1 mt-1">
-            <button onClick="editarTarea(${tarea.id})" class="btn btn-outline-primary"> ${tarea.editando ? '<i class="fa-solid fa-check"></i>' : '<i class="fa-regular fa-pen-to-square"></i>'}</button>
+            <button onClick="editarTarea(${tarea.id})" class="btn btn-outline-primary btn-editar"> ${tarea.editando ? '<i class="fa-solid fa-check"></i>' : '<i class="fa-regular fa-pen-to-square"></i>'}</button>
             <button onclick="borrar(${tarea.id})" class="btn btn-danger btn-eliminar bg-${tarea.realizada ? "opacity-1" : "opacity-05"}"><i class="fa-regular fa-trash-can"></i></button>
         </div>
         </li>`;
@@ -111,7 +112,7 @@ function borrar(id) {
         //eliminar tarea del array tareas usando splice despues de la animacion
         const index = tareas.findIndex((ele) => ele.id == id);
         tareas.splice(index, 1); 
-        
+
         renderTareas(); //despues de la animacion llamamos a render tareas
     }, 500); //tiempo igual de la animacion
 }
@@ -123,14 +124,34 @@ function editarTarea(id) {
     const tarea = tareas.find(t => t.id === id);
     if (!tarea) return;
     
+    // Si ya estaba en modo edición, guardamos el nuevo nombre
     if (tarea.editando) {
         const input = document.querySelector(`#editar-${id}`);
         tarea.nombreTarea = input.value.trim();
     }
 
+    // Alternamos el modo edición
     tarea.editando = !tarea.editando;
+
     renderTareas();
+
+    // Si ahora está en modo edición, agregamos el listener
+    if (tarea.editando) {
+        const input = document.querySelector(`#editar-${id}`);
+
+        if (input) {
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    editarTarea(id); // volver a llamar para guardar
+                }
+            });
+            input.focus(); // opcional: enfoca el input automáticamente
+        } 
+    }
 }
+
+
+
 
 ///////Editar TEMAS COLORES ////////
 const selectTema = document.getElementById('selectTema');
